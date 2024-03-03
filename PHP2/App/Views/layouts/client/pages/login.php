@@ -15,7 +15,7 @@
 
         <div class="sufee-login d-flex align-content-center flex-wrap">
             <div class="container">
-            <h1 class="text-center">Đăng Nhập</h1>
+            <h1 style="margin-top: 100px;" class="text-center">Đăng Nhập</h1>
                 <div class="login-content col-12 d-flex content-items-center justify-content-center">
 
                     <div class="login-form col-6">
@@ -46,15 +46,20 @@
                                 </div>
                                 <?php unset($_SESSION["passwordError"]); ?>
                                 <?php endif; ?>
+                                <?php if (isset($_SESSION["roleError"])): ?>
+                                <div class="error text-danger">
+                                    <?php echo $_SESSION["roleError"]; ?>
+                                </div>
+                                <?php unset($_SESSION["roleError"]); ?>
+                                <?php endif; ?>
                             </div>
                             <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Remember Me
+                                <label style="margin: 10px 0;" class="pull-right">
+                                    <a href="<?=APP_URL?>?url=ResgisterController/loadViewRegister" class="btn btn-primary">Đăng ký</a>
                                 </label>
-                                <label class="pull-right">
-                                    <a href="<?=APP_URL?>forget">Forgotten Password?</a>
+                                <label style="float: right; margin: 10px 0;" class="pull-right">
+                                    <a href="<?=APP_URL?>?url=UserController/userForget" class="btn btn-link pull-right">Quên mật khẩu</a>
                                 </label>
-
                             </div>
                             <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30">Sign in</button>
                         </form>

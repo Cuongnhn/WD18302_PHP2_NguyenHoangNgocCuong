@@ -28,6 +28,7 @@ class ResgisterController extends BaseController{
             $email = $_POST["email"];
             $address = $_POST["address"];
             $phone = $_POST["phone"];
+            $role = 1;
             $password = $_POST["password"];
         
             $nameError = "";
@@ -90,10 +91,13 @@ class ResgisterController extends BaseController{
                 "email" => $email,
                 "address" => $address,
                 "phone" => $phone,
+                "role" => $role,
                 "password" => $hashedPassword
             ];
             
             // Gọi phương thức đăng ký người dùng và chuyển đến trang đăng nhập
+            $success = "Đăng ký thành công.";
+            $_SESSION["success"] = $success;
             $userModel = new UserModel();
             $userModel->registerUser($userData);
         }

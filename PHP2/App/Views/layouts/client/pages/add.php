@@ -35,6 +35,12 @@
 <h1 style="margin: 10px 0;">Thêm thông tin Sinh viên</h1>
 <!-- Form và các trường input -->
 <form style="padding: 20px;" action="?url=StudentController/handleAdd" method="POST">
+<?php if (isset($_SESSION["error_message"])): ?>
+        <div class="error text-danger">
+            <?php echo $_SESSION["error_message"]; ?>
+        </div>
+        <?php unset($_SESSION["error_message"]); ?>
+        <?php endif; ?>
     <div class="form-group">
         <label for="student_code1" class="form-label">Mã số sinh viên:</label>
         <input type="text" class="form-control" id="student_code1" name="student_code" value="<?php echo $studentCode; ?>">

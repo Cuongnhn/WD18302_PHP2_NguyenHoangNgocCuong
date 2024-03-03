@@ -48,8 +48,6 @@ class LoginController extends BaseController{
                 $passwordError = "Mật khẩu phải chứa ít nhất 6 ký tự.";
             }
         }
-        // validation form
-        // kiểm tra trước rồi mới new UserModel();
 
         // Kiểm tra nếu không có lỗi
         if (empty($emailError) || empty($passwordError)) {
@@ -57,30 +55,53 @@ class LoginController extends BaseController{
             $user = $userModel->checkUserExist($email);
             // var_dump ($user);
             // var_dump($user['password']);
+            // var_dump($user['role']);
             // exit;
 
+            // if (empty($user)) {
+            //     $emailError = "Email không tồn tại.";
+            //     $_SESSION["emailError"] = $emailError;
+            // } else {
+            //     if (password_verify($password, $user['password'])) {
+            //         // xử lý session
+            //         $_SESSION['user'] = $user;
+            //         $redirectUrl = "http://PHP2/";
+            //         header("Location: " . $redirectUrl);
+            //         // header("Location: " . ROOT_URL);
+            //         exit();
+            //     } else {
+            //         $passwordError = "Mật khẩu sai. Vui lòng nhập lại.";
+            //         $_SESSION["passwordError"] = $passwordError;
+            //     }
+            // }
             if (empty($user)) {
                 $emailError = "Email không tồn tại.";
                 $_SESSION["emailError"] = $emailError;
             } else {
-                if (password_verify($password, $user['password'])) {
-                    // xử lý session
-                    $_SESSION['user'] = $user;
-                    $redirectUrl = "http://PHP2/";
-                    header("Location: " . $redirectUrl);
-                    // header("Location: " . ROOT_URL);
-                    exit();
+                if ($user['role'] == 0) {
+                    $password = $_POST["password"];
+                    if (password_verify($password, $user['password'])) {
+                        // Xử lý session
+                        $_SESSION['user'] = $user;
+                        $redirectUrl = "http://PHP2/";
+                        header("Location: " . $redirectUrl);
+                        exit();
+                    } else {
+                        $passwordError = "Mật khẩu sai. Vui lòng nhập lại.";
+                        $_SESSION["passwordError"] = $passwordError;
+                    }
                 } else {
-                    $passwordError = "Mật khẩu sai. Vui lòng nhập lại.";
-                    $_SESSION["passwordError"] = $passwordError;
+                    $roleError = "Không phải tài khoản admin.";
+                    $_SESSION["roleError"] = $roleError;
                 }
             }
         }
         
-        if (isset($passwordError) || isset($emailError))  {
+        if (isset($passwordError) || isset($emailError) || isset($roleError))  {
             // Lưu thông tin lỗi vào session
             $_SESSION["emailError"] = $emailError;
             $_SESSION["passwordError"] = $passwordError;
+            $_SESSION["roleError"] = $roleError;
         }
     $redirectUrl = "http://PHP2/?url=LoginController/loadViewLogin";
     header("Location: " . $redirectUrl);

@@ -25,9 +25,13 @@ class StudentModel extends BaseModel{
         // $tableName = $this->tableName;   
         $student = $this->insert($this->tableName,$data);
     }
+    public function checkStudentExist($email){
+        return $this->select()->where('email', '=', $email)->first();
+    }
 
     public function updateStudents($id, $data)
     {
+        // $condition = "id = $id AND email = '$email'";
         $updateQuery = $this->updateData($this->tableName, $data,'id='. $id);
     }
 

@@ -51,7 +51,7 @@
                                             <td><?= isset($value['email']) ? $value['email'] : ''; ?></td>
                                             <td><?= isset($value['address']) ? $value['address'] : ''; ?></td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm"><a href="http://php2/?url=StudentController/studentUpdate/<?=$value['id']?>">Sửa</a></button>
+                                                <button class="btn btn-primary btn-sm"><a style="color: white;" href="http://php2/?url=StudentController/studentUpdate/<?=$value['id']?>">Sửa</a></button>
                                                 <button class="btn btn-danger btn-sm"><a onclick="confirmDelete(<?= isset($value['id']) ? $value['id'] : '0'; ?>)" href="javascript:void(0);">Xóa</a></button>
                                             </td>
                                         </tr>

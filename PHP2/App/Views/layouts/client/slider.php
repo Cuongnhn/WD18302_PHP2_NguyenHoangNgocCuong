@@ -125,7 +125,7 @@
                             aria-expanded="false"> <i class="menu-icon fa fa-glass"></i>Trang</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="menu-icon fa fa-sign-in"></i><a href="<?=APP_URL?>?url=LoginController/logout">Đăng xuất</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="<?=APP_URL?>forget">Quên mật khẩu</a>
+                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="<?=APP_URL?>?url=UserController/userForget">Quên mật khẩu</a>
                             </li>
                         </ul>
                     </li>

@@ -23,6 +23,12 @@
     <form id="signupForm" style="padding: 20px;" action="?url=UserController/handleUpdate" method="POST">
     <div class="form-group">
         <input type="hidden" class="form-control" id="user_id" name="user_id" value="<?= $id; ?>">
+        <?php if (isset($_SESSION["error_message"])): ?>
+        <div class="alert alert-success" role="alert">
+            <?php echo $_SESSION["error_message"]; ?>
+        </div>
+        <?php unset($_SESSION["error_message"]); ?>
+        <?php endif; ?>
     </div>
         <div class="form-group">
             <label for="fullName">Tên tài khoản</label>

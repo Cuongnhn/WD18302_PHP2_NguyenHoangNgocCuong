@@ -22,6 +22,12 @@
 <!-- Form và các trường input -->
     
 <form style="padding: 20px;" action="?url=StudentController/handleUpdate" method="POST">
+    <?php if (isset($_SESSION["success_message"])): ?>
+        <div class="alert alert-success" role="alert">
+            <?php echo $_SESSION["success_message"]; ?>
+        </div>
+        <?php unset($_SESSION["success_message"]); ?>
+    <?php endif; ?>
     <div class="form-group">
         <input type="hidden" class="form-control" id="student_id" name="student_id" value="<?= $id; ?>">
     </div>

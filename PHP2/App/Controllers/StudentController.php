@@ -45,8 +45,8 @@ class StudentController extends BaseController
             // Kiểm tra tên
             if (empty($student_code)) {
                 $student_codeError = "Vui lòng nhập mã số sinh viên.";
-            }else if (!preg_match('/^[a-zA-Z0-9]{6,12}$/', $student_code)) {
-                $student_codeError = "mã số sinh viên phải đủ 6 đến 12 ký tự.";
+            } else if (strlen($student_code) < 7 || strlen($student_code) > 10) {
+                $student_codeError = "Mã số sinh viên phải có độ dài từ 7 đến 10 ký tự.";
             }
             
             // Kiểm tra email
@@ -54,7 +54,13 @@ class StudentController extends BaseController
                 $emailError = "Vui lòng nhập địa chỉ email.";
             } else if (!preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $email)) {
                 $emailError = "Địa chỉ email không hợp lệ.";
-            }
+            } else if (!empty($email)) {
+                $StudentModel = new StudentModel();
+                $student = $StudentModel->checkStudentExist($email);
+                if ($student) {
+                    $emailError = "Email đã tồn tại vui lòng thử lại.";
+                }
+            } 
 
             if (empty($birthday)) {
                 $birthdayError = "Vui lòng nhập ngày sinh.";
@@ -63,6 +69,8 @@ class StudentController extends BaseController
                 $dateTime = \DateTime::createFromFormat('Y-m-d', $birthday);
                 if (!$dateTime || $dateTime->format('Y-m-d') !== $birthday) {
                     $birthdayError = "Ngày sinh không hợp lệ. Vui lòng nhập đúng định dạng Y-m-d.";
+                } else if ($dateTime > new \DateTime()) {
+                    $birthdayError = "Ngày sinh không được lớn hơn ngày hiện tại.";
                 }
             }
 
@@ -79,24 +87,30 @@ class StudentController extends BaseController
                 }
         }
 
-        if (!empty($student_codeError) || !empty($emailError) || !empty($classError) || !empty($first_nameError) || !empty($birthdayError))  {
+        if (empty($student_codeError) && empty($emailError) && empty($classError) && empty($first_nameError) && empty($birthdayError)) {
+            // Thực hiện truy vấn SQL
+        if ($this->studentModel->insertStudents($_POST)) {
+            $_SESSION["error_message"] = "Thêm thành công.";
+        } else {
+            $error_message = mysqli_error($connection);
+            echo "Lỗi SQL: " . $error_message;
+        }
+        $redirectUrl = "http://PHP2/?url=StudentController/studentAdd";
+        header("Location: " . $redirectUrl);
+        exit;
+        
+        } else {
             // Lưu thông tin lỗi vào session
             $_SESSION["student_codeError"] = $student_codeError;
             $_SESSION["emailError"] = $emailError;
             $_SESSION["classError"] = $classError;
             $_SESSION["first_nameError"] = $first_nameError;
             $_SESSION["birthdayError"] = $birthdayError;
-        } 
-
-        $this->studentModel->insertStudents($_POST);
-        
-
-        // header('Location: ' . $_SERVER['PHP_SELF']);
-        // exit;
-        $redirectUrl = "http://PHP2/?url=StudentController/studentAdd";
+            $redirectUrl = "http://PHP2/?url=StudentController/studentAdd";
         header("Location: " . $redirectUrl);
         exit;
     }
+}
 
     public function studentAdd(){
         $this->checkUserLoggedIn();
@@ -125,8 +139,8 @@ class StudentController extends BaseController
             // Kiểm tra tên
             if (empty($student_code)) {
                 $student_codeError = "Vui lòng nhập mã số sinh viên.";
-            }else if (!preg_match('/^[a-zA-Z0-9]{6,12}$/', $student_code)) {
-                $student_codeError = "mã số sinh viên phải đủ 6 đến 12 ký tự.";
+            } else if (strlen($student_code) < 7 || strlen($student_code) > 10) {
+                $student_codeError = "Mã số sinh viên phải có độ dài từ 7 đến 10 ký tự.";
             }
             
             // Kiểm tra email
@@ -161,7 +175,7 @@ class StudentController extends BaseController
                 }
         }
 
-        if (!empty($student_codeError) || !empty($emailError) || !empty($classError) || !empty($first_nameError) || !empty($birthdayError)) {
+        if (empty($student_codeError) && empty($emailError) && empty($classError) && empty($first_nameError) && empty($birthdayError)) {
             // Tạo một mảng chứa thông tin người dùng
             $userData = [
                 "student_code" => $student_code,
@@ -170,8 +184,10 @@ class StudentController extends BaseController
                 "first_name" => $first_name,
                 "birthday" => $birthday
             ];
-            $this->studentModel->updateStudents($student_id, $userData);
 
+            // Thực hiện truy vấn SQL
+            $this->studentModel->updateStudents($student_id, $userData);
+            $_SESSION["success_message"] = "Cập nhật thành công.";
             $redirectUrl = "http://PHP2/?url=StudentController/studentUpdate/".$student_id;
             header("Location: " . $redirectUrl);
             exit;
@@ -186,8 +202,6 @@ class StudentController extends BaseController
             header("Location: " . $redirectUrl);
             exit;
         }
-        
-        
     }
 
     public function studentUpdate($student_id){

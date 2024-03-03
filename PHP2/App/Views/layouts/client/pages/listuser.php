@@ -30,12 +30,12 @@
                             <div class="col-md-6">
                                 <strong class="card-title">Danh Sách User</strong>
                             </div>
-                            <div class="col-md-6 text-right">
+                            <!-- <div class="col-md-6 text-right">
                                 <div class="search-container">
                                     <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm">
                                     <button class="btn btn-primary" onclick="searchTable()">Tìm kiếm</button>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="card-body">
@@ -65,7 +65,7 @@
                                     <td><?= $value['phone']; ?></td>
                                     <td>
                             <button class="btn btn-primary btn-sm" onclick="editItem(<?= $value['id']; ?>)">
-                                <a href="http://php2/?url=UserController/userUpdate/<?= $value['id'] ?>">Sửa</a>
+                                <a style="color: white;" href="http://php2/?url=UserController/userUpdate/<?= $value['id'] ?>">Sửa</a>
                             </button>
                             <button class="btn btn-danger btn-sm" onclick="confirmDelete(<?= isset($value['id']) ? $value['id'] : '0'; ?>)">
                                 <a href="javascript:void(0);">Xóa</a>

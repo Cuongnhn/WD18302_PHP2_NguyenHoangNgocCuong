@@ -11,11 +11,17 @@
 
 <body class="">
     <div class="container">
-        <h1 class="text-center">Đăng ký</h1>
+        <h1 style="margin-top: 20px;" class="text-center">Đăng ký</h1>
         <div class="row justify-content-center">
             <div class="col-lg-4">
                 <form method="POST" action="?url=ResgisterController/handleRegister"
                     class="d-flex justify-content-center flex-column">
+                    <?php if (isset($_SESSION["success"])): ?>
+                                <div class="success text-success">
+                                    <?php echo $_SESSION["success"]; ?>
+                                </div>
+                                <?php unset($_SESSION["success"]); ?>
+                                <?php endif; ?>
                     <div class="mb-3">
                         <label for="lregisterInputname1" class="form-label">Họ và tên</label>
                         <input name="name" type="name" class="form-control" id="lregisterInputname1"
@@ -69,7 +75,7 @@
                                 <?php endif; ?>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="http://php2.local/Buoi18/?url=LoginController/loadViewLogin" class="btn btn-link">Login</a>
+                    <a href="<?=APP_URL?>?url=LoginController/loadViewLogin" class="btn btn-link">Login</a>
                 </form>
             </div>
         </div>

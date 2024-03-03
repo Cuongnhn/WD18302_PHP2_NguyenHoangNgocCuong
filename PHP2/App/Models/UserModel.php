@@ -21,7 +21,6 @@ class UserModel extends BaseModel{
     public function getUser($id){
         return $this->select()->where('id', '=',$id )->first();
     }
-
     public function checkUserExist($email){
         return $this->select()->where('email', '=', $email)->first();
     }
@@ -31,18 +30,21 @@ class UserModel extends BaseModel{
     }
 
     public function registerUser($data){
-        // $tableName = $this->tableName;
         $user = $this->insert($this->table,$data);
     }
 
     public function deleteUser($id){
-        // $tableName = $this->tableName;
         $user = $this->deleteData($this->tableName, 'id='.$id);
     }
 
     public function updateUser($id, $data)
     {
         $updateQuery = $this->updateData($this->tableName, $data,'id='. $id);
+    }
+
+    public function forgotUser($email, $data)
+    {
+        $updateQuery = $this->updateData($this->tableName, $data,"email='$email'");
     }
 
     public function create($data){
